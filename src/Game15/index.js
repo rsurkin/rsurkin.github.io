@@ -1,13 +1,25 @@
 import React from 'react'
-import GameLayout from './GameLayout'
+import TilesContainer from './TilesContainer'
 import Tile from './Tile'
 
-const tileLabels = [...Array(16).keys()];
+const tileIds = [...Array(16).keys()];
+const onTileClick = (e) => {
+  const id = +e.target.dataset.id
+
+  // bla bla bla
+}
 
 export default () => {
   return (
-    <GameLayout>
-      {tileLabels.map((label) => (<Tile label={label}/>))}
-    </GameLayout>
+    <TilesContainer>
+      {tileIds.map(
+        (id) => (<Tile
+          key={id}
+          label={id}
+          id={id}
+          onClick={onTileClick}
+        />)
+      )}
+    </TilesContainer>
   )
 }
