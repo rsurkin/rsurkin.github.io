@@ -7,20 +7,44 @@ const createNewGame = () => {
   ;
 };
 
-export default (state = [], action) => {
-  switch (action.type) {
+const moveAvailable = (tiles, id) => {
+  const positionOfZero = tiles.indexOf(0);
+  const positionOfElement = tiles.indexOf(id);
+
+  return (
+    positionOfElement + 1 === positionOfZero
+    || positionOfElement - 1 === positionOfZero
+    || positionOfElement - 1 === positionOfZero
+    || positionOfElement - 4 === positionOfZero
+    || positionOfElement + 4 === positionOfZero
+  )
+};
+
+const moveTile = (tiles, id) => {
+  const positionOfZero = tiles.indexOf(0);
+  const positionOfElement = tiles.indexOf(id);
+
+  const newTiles = [
+    ...tiles
+  ];
+
+  newTiles[positionOfZero] = id;
+  newTiles[positionOfElement] = 0;
+
+  return newTiles;
+};
+
+export default (tiles = [], {type, id}) => {
+  switch (type) {
     case 'MOVE_TILE':
-      return [
-        ...state,
-        // {
-        //   id: action.id,
-        //   text: action.text,
-        //   completed: false
-        // }
-      ];
+      if (moveAvailable(tiles, id)) {
+        return moveTile(tiles, id);
+      } else {
+        return tiles
+      }
     case 'NEW_GAME':
       return createNewGame();
     default:
-      return state;
+      return tiles;
   }
 }
