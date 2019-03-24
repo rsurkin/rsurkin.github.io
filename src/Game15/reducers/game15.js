@@ -22,13 +22,6 @@ const undo = (game15, redo) => {
   const direction = redo ? +1 : -1;
   const nextStackPointer = stackPointer + direction;
 
-  console.log(
-    direction,
-    nextStackPointer,
-    undoStack[nextStackPointer],
-    undoStack,
-  )
-
   const tiles = [
     ...undoStack[nextStackPointer]
   ];
