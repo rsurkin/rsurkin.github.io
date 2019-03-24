@@ -14,6 +14,7 @@ const GameView = (props) => {
     tiles,
     startNewGame,
     handleStartNewGame,
+    undoAvailable,
     handleUndo
   } = props;
 
@@ -24,7 +25,7 @@ const GameView = (props) => {
   return (
     <div>
       <a href="#" className={`btn`} onClick={handleStartNewGame}>Start new game</a>
-      <a href="#" className={`btn`} onClick={handleUndo} disabled="true">undo</a>
+      <a href="#" className={`btn`} onClick={handleUndo} disabled={!undoAvailable}>undo</a>
 
       <TilesContainer>
         {tiles.map(
@@ -41,7 +42,16 @@ const GameView = (props) => {
 }
 
 export default connect(
-  ({tiles = []}) => ({tiles}),
+  ({game15}) => {
+    const {
+      tiles = [], undoAvailable = false
+    } = game15;
+
+    return {
+      tiles,
+      undoAvailable,
+    }
+  },
   (dispatch) => ({
     startNewGame: () => {
       dispatch(startNewGameAction());
