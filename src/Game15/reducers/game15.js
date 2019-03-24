@@ -127,6 +127,7 @@ const createNewGame = () => {
     ;
 
   return {
+    // за рамками задачи, выделить, ф-ию isRestore available, и зануть это в другой файл
     restoreAvailable: localStorage.getItem(GAME_SAVE_KEY) !== null,
     undoStack: [
       tiles
