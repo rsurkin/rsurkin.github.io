@@ -8,33 +8,54 @@ import {
   undoAction,
 } from '../actions';
 
-const GameView = ({ handleTileClick, tiles, handleStartNewGame }) => {
-  console.log('aaa', tiles);
+const GameView = (props) => {
+  const {
+    handleTileClick,
+    tiles,
+    startNewGame,
+    handleStartNewGame,
+    handleUndo
+  } = props;
+
   if (!tiles.length) {
-    handleStartNewGame();
+    startNewGame();
   }
 
   return (
-    <TilesContainer>
-      {tiles.map(
-        (id) => (<Tile
-          key={id}
-          label={id}
-          id={id}
-          onClick={handleTileClick}
-        />)
-      )}
-    </TilesContainer>
+    <div>
+      <a href="#" className={`btn`} onClick={handleStartNewGame}>Start new game</a>
+      <a href="#" className={`btn`} onClick={handleUndo} disabled="true">undo</a>
+
+      <TilesContainer>
+        {tiles.map(
+          (id) => (<Tile
+            key={id}
+            label={id}
+            id={id}
+            onClick={handleTileClick}
+          />)
+        )}
+      </TilesContainer>
+    </div>
   )
 }
 
 export default connect(
   ({tiles = []}) => ({tiles}),
   (dispatch) => ({
-    handleStartNewGame: () => {
+    startNewGame: () => {
       dispatch(startNewGameAction());
     },
-    handleUndo: () => {
+    handleStartNewGame: (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      dispatch(startNewGameAction());
+    },
+    handleUndo: (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
       dispatch(undoAction());
     },
     handleTileClick: (e) => {

@@ -33,3 +33,28 @@ body {
   color: #FFFFFF;
   background-color: #4CAF50;
 }
+
+
+.btn {
+  display: block;
+  padding: 4px;
+  background-color: #1c8079;
+  box-sizing: border-box;
+  margin-bottom: 4px;
+  color: #FFF;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.btn:active {
+  box-shadow: inset 2px 2px 6px 1px #035650;
+}
+
+.btn[disabled] {
+  background-color: gray;
+}
+.btn[disabled]:active {
+  box-shadow: none;
+}
