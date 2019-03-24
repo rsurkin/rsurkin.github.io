@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import TilesContainer from './TilesContainer';
 import Tile from './Tile';
 import {
@@ -7,6 +8,8 @@ import {
   startNewGameAction,
   undoAction,
   redoAction,
+  saveAction,
+  restoreAction,
 } from '../actions';
 
 const GameView = (props) => {
@@ -19,6 +22,9 @@ const GameView = (props) => {
     handleUndo,
     redoAvailable,
     handleRedo,
+    handleSave,
+    restoreAvailable,
+    handleRestore,
   } = props;
 
   if (!tiles.length) {
@@ -28,8 +34,21 @@ const GameView = (props) => {
   return (
     <div>
       <a href="#" className={`btn`} onClick={handleStartNewGame}>Start new game</a>
-      <a href="#" className={`btn`} onClick={handleUndo} disabled={!undoAvailable}>undo</a>
-      <a href="#" className={`btn`} onClick={handleRedo} disabled={!redoAvailable}>redo</a>
+
+      <div className={`actionBtns`}>
+        <a href="#" className={`btn`} onClick={handleUndo} disabled={!undoAvailable}>
+          <FontAwesomeIcon icon="undo" />
+        </a>
+        <a href="#" className={`btn`} onClick={handleRedo} disabled={!redoAvailable}>
+          <FontAwesomeIcon icon="redo" />
+        </a>
+        <a href="#" className={`btn`} onClick={handleSave}>
+          <FontAwesomeIcon icon="save" />
+        </a>
+        <a href="#" className={`btn`} onClick={handleRestore} disabled={!restoreAvailable}>
+          <FontAwesomeIcon icon="file-upload" />
+        </a>
+      </div>
 
       <TilesContainer>
         {tiles.map(
@@ -51,12 +70,14 @@ export default connect(
       tiles = [],
       undoAvailable = false,
       redoAvailable = false,
+      restoreAvailable = false,
     } = game15;
 
     return {
       tiles,
       undoAvailable,
       redoAvailable,
+      restoreAvailable,
     }
   },
   (dispatch) => ({
@@ -87,6 +108,18 @@ export default connect(
       dispatch(
         moveTileAction(id)
       );
-    }
+    },
+    handleSave: (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      dispatch(saveAction());
+    },
+    handleRestore: (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      dispatch(restoreAction());
+    },
   })
 )(GameView);

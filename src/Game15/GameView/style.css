@@ -58,3 +58,11 @@ body {
 .btn[disabled]:active {
   box-shadow: none;
 }
+
+.actionBtns {
+  display: flex;
+  justify-content: space-between;
+}
+.actionBtns .btn {
+  width: calc(25% - 2px);
+}

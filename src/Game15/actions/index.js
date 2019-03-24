@@ -14,3 +14,11 @@ export const moveTileAction = (id) => ({
   type: 'MOVE_TILE',
   id: id,
 });
+
+export const saveAction = () => ({
+  type: 'SAVE',
+});
+
+export const restoreAction = () => ({
+  type: 'RESTORE',
+});

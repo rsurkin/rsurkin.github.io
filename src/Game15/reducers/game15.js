@@ -8,13 +8,46 @@ export default (game15 = {}, {type, id}) => {
       return undo(game15, false);
     case 'REDO':
       return undo(game15, true);
+    case 'SAVE':
+      return save(game15);
+    case 'RESTORE':
+      return restore();
     default:
       return game15;
   }
 }
 
+const GAME_SAVE_KEY = `game15save`
+
+const save = (game15) => {
+  localStorage.setItem(
+    GAME_SAVE_KEY,
+    JSON.stringify(game15)
+  );
+
+  return {
+    ...game15,
+    restoreAvailable: true
+  }
+}
+
+const restore = () => {
+  // в идеале какую то схему, котороая провалидирует JSON, но я себе доверяю
+  const newGame15 = JSON.parse(
+    localStorage.getItem(GAME_SAVE_KEY)
+  );
+
+  return {
+    ...newGame15
+  };
+}
+
 const undo = (game15, redo) => {
-  const { undoStack, stackPointer } = game15;
+  const {
+    undoStack,
+    stackPointer,
+    restoreAvailable,
+  } = game15;
   if (!undoStack.length) {
     return game15;
   }
@@ -27,6 +60,7 @@ const undo = (game15, redo) => {
   ];
 
   return {
+    restoreAvailable: restoreAvailable,
     tiles: tiles,
     undoStack: [...undoStack],
     stackPointer: nextStackPointer,
@@ -40,6 +74,7 @@ const moveTile = (game15, id) => {
     tiles,
     undoStack,
     stackPointer,
+    restoreAvailable,
   } = game15;
   if (!moveAvailable(tiles, id)) {
     return game15;
@@ -61,6 +96,7 @@ const moveTile = (game15, id) => {
   ];
 
   return {
+    restoreAvailable: restoreAvailable,
     undoStack: nextUndoStack,
     undoAvailable: true,
     redoAvailable: false,
@@ -91,6 +127,7 @@ const createNewGame = () => {
     ;
 
   return {
+    restoreAvailable: localStorage.getItem(GAME_SAVE_KEY) !== null,
     undoStack: [
       tiles
     ],
