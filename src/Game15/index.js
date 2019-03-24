@@ -1,25 +1,11 @@
-import React from 'react'
-import TilesContainer from './TilesContainer'
-import Tile from './Tile'
+import React from 'react';
+import {Provider} from 'react-redux';
+import GameView from './GameView';
+import store from './store';
 
-const tileIds = [...Array(16).keys()];
-const onTileClick = (e) => {
-  const id = +e.target.dataset.id
-
-  // bla bla bla
-}
-
-export default () => {
-  return (
-    <TilesContainer>
-      {tileIds.map(
-        (id) => (<Tile
-          key={id}
-          label={id}
-          id={id}
-          onClick={onTileClick}
-        />)
-      )}
-    </TilesContainer>
-  )
-}
+// вообще, стор лучше уровнем выше заинить, если у меня будет еще что то
+export default () => (
+  <Provider store={store}>
+    <GameView />
+  </Provider>
+)
