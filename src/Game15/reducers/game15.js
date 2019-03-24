@@ -5,31 +5,49 @@ export default (game15 = {}, {type, id}) => {
     case 'NEW_GAME':
       return createNewGame();
     case 'UNDO':
-      return undo(game15);
+      return undo(game15, false);
+    case 'REDO':
+      return undo(game15, true);
     default:
       return game15;
   }
 }
 
-const undo = (game15) => {
-  const { undoStack } = game15;
+const undo = (game15, redo) => {
+  const { undoStack, stackPointer } = game15;
   if (!undoStack.length) {
     return game15;
   }
 
-  const nextUndoStack = [
-    ...undoStack,
+  const direction = redo ? +1 : -1;
+  const nextStackPointer = stackPointer + direction;
+
+  console.log(
+    direction,
+    nextStackPointer,
+    undoStack[nextStackPointer],
+    undoStack,
+  )
+
+  const tiles = [
+    ...undoStack[nextStackPointer]
   ];
 
   return {
-    tiles: nextUndoStack.pop(),
-    undoStack: nextUndoStack,
-    undoAvailable: nextUndoStack.length > 0,
+    tiles: tiles,
+    undoStack: [...undoStack],
+    stackPointer: nextStackPointer,
+    undoAvailable: nextStackPointer > 0,
+    redoAvailable: nextStackPointer < undoStack.length - 1,
   }
 };
 
 const moveTile = (game15, id) => {
-  const {tiles, undoStack} = game15;
+  const {
+    tiles,
+    undoStack,
+    stackPointer,
+  } = game15;
   if (!moveAvailable(tiles, id)) {
     return game15;
   }
@@ -44,12 +62,16 @@ const moveTile = (game15, id) => {
   newTiles[positionOfZero] = id;
   newTiles[positionOfElement] = 0;
 
+  const nextUndoStack = [
+    ...undoStack.slice(0, stackPointer + 1),
+    newTiles,
+  ];
+
   return {
-    undoStack: [
-      ...undoStack,
-      tiles,
-    ],
+    undoStack: nextUndoStack,
     undoAvailable: true,
+    redoAvailable: false,
+    stackPointer: nextUndoStack.length - 1,
     tiles: newTiles,
   };
 };
@@ -76,8 +98,12 @@ const createNewGame = () => {
     ;
 
   return {
-    undoStack: [],
+    undoStack: [
+      tiles
+    ],
     undoAvailable: false,
+    redoAvailable: false,
+    stackPointer: 0,
     tiles: tiles,
   }
 };

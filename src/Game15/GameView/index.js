@@ -6,6 +6,7 @@ import {
   moveTileAction,
   startNewGameAction,
   undoAction,
+  redoAction,
 } from '../actions';
 
 const GameView = (props) => {
@@ -15,7 +16,9 @@ const GameView = (props) => {
     startNewGame,
     handleStartNewGame,
     undoAvailable,
-    handleUndo
+    handleUndo,
+    redoAvailable,
+    handleRedo,
   } = props;
 
   if (!tiles.length) {
@@ -26,6 +29,7 @@ const GameView = (props) => {
     <div>
       <a href="#" className={`btn`} onClick={handleStartNewGame}>Start new game</a>
       <a href="#" className={`btn`} onClick={handleUndo} disabled={!undoAvailable}>undo</a>
+      <a href="#" className={`btn`} onClick={handleRedo} disabled={!redoAvailable}>redo</a>
 
       <TilesContainer>
         {tiles.map(
@@ -44,12 +48,15 @@ const GameView = (props) => {
 export default connect(
   ({game15}) => {
     const {
-      tiles = [], undoAvailable = false
+      tiles = [],
+      undoAvailable = false,
+      redoAvailable = false,
     } = game15;
 
     return {
       tiles,
       undoAvailable,
+      redoAvailable,
     }
   },
   (dispatch) => ({
@@ -67,6 +74,12 @@ export default connect(
       e.stopPropagation();
 
       dispatch(undoAction());
+    },
+    handleRedo: (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      dispatch(redoAction());
     },
     handleTileClick: (e) => {
       const id = +e.target.dataset.id;
