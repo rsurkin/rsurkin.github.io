@@ -48,12 +48,13 @@ const undo = (game15, redo) => {
     stackPointer,
     restoreAvailable,
   } = game15;
-  if (!undoStack.length) {
-    return game15;
-  }
 
   const direction = redo ? +1 : -1;
   const nextStackPointer = stackPointer + direction;
+
+  if (!undoStack[nextStackPointer]) {
+    return game15;
+  }
 
   const tiles = [
     ...undoStack[nextStackPointer]
