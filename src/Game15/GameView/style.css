@@ -10,6 +10,19 @@ body {
   justify-content: center;
 }
 
+/* может для каких то современных мобилок непоконает */
+@media (max-width:480px)  {
+  body {
+    --tileSize: calc(100vmin/4);
+    align-items: flex-start;
+    background-color: gray;
+  }
+
+  .field {
+    border: 0px;
+  }
+}
+
 .field {
   border: 4px solid gray;
   width: calc(4 * var(--tileSize)  + 8px);
@@ -36,14 +49,17 @@ body {
 
 
 .btn {
-  display: block;
+  font-size: calc(var(--tileSize) / 3);
+  height:  var(--tileSize);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 4px;
   background-color: #1c8079;
   box-sizing: border-box;
   margin-bottom: 4px;
   color: #FFF;
   text-transform: uppercase;
-  text-align: center;
   font-weight: bold;
   text-decoration: none;
 }
