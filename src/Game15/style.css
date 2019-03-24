@@ -1,5 +1,13 @@
+body, html {
+  width: 100%;
+  height: 100%;
+}
+
 body {
-  --tileSize: 25px;
+  --tileSize: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .field {
@@ -21,4 +29,5 @@ body {
   justify-content: center;
   font-size: calc(var(--tileSize) / 2);
   font-weight: bold;
+  cursor: pointer;
 }
